@@ -1,21 +1,31 @@
-name: 'Process Julia coverage files'
-description: 'Convert Julia coverage files into a lcov file'
-author: 'David Anthoff'
+name: "Process Julia Coverage"
+description: "Calculate coverage and generate a lcov file"
+author: "Heptazhou"
 
 branding:
-  icon: 'settings'
-  color: 'gray-dark'
+  icon: "settings"
+  color: "gray-dark"
 
 inputs:
-  directories:
-    description: 'Comma-separated list of directories to look for coverage information (e.g. `src,examples`)'
+  directory:
+    default: "src"
+    description: "Colon-separated list of directories to look for coverage (e.g., `src:examples`)"
     required: false
-    default: 'src'
+  file:
+    default: "lcov.info"
+    description: "Path of lcov file to use. Will try to generate it if not exists."
+    required: false
+  force:
+    default: "false"
+    description: "Force to generate a new lcov file (`true` or `false`)."
+    required: false
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - run: julia --color=yes "$GITHUB_ACTION_PATH"/main.jl
       shell: bash
       env:
-        INPUT_DIRECTORIES: ${{ inputs.directories }}
+        INPUT_DIRECTORY: ${{ inputs.directory }}
+        INPUT_FILE_LCOV: ${{ inputs.file }}
+        INPUT_FORCE: ${{ inputs.force }}

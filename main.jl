@@ -1,16 +1,24 @@
 using Pkg
 
-Pkg.activate("coveragetempenv", shared=true)
-
-Pkg.add(PackageSpec(name="CoverageTools"))
+Pkg.activate("coveragetempenv", shared = true)
+Pkg.add(PackageSpec(name = "CoverageTools"))
 
 using CoverageTools
 
-directories = get(ENV, "INPUT_DIRECTORIES", "src")
-dirs = filter!(!isempty, split(directories, ","))
-for dir in dirs
-    isdir(dir) || error("directory \"$dir\" not found!")
-end
+dirs = get(ENV, "INPUT_DIRECTORY", "src")
+lcov = get(ENV, "INPUT_FILE_LCOV", "lcov.info")
+ign = parse(Bool, get(ENV, "INPUT_FORCE", "false"))
 
-pfs = mapreduce(process_folder, vcat, dirs)
-LCOV.writefile("lcov.info", pfs)
+dirs = filter!(!isempty, split(dirs, ":"))
+for dir in dirs
+	isdir(dir) || error("`$dir` is not a directory")
+end
+isdir(lcov) && error("`$lcov` is a directory")
+
+fcs = !ign && isfile(lcov) ? LCOV.readfile(lcov) : vcat(process_folder.(dirs)...)
+LCOV.writefile(lcov, fcs)
+
+cvr, tot = get_summary(fcs)
+pct = round(100cvr / tot, digits = 2)
+@info "$cvr / $tot ($pct%)"
+
