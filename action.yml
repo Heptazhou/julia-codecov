@@ -7,17 +7,21 @@ branding:
   color: "gray-dark"
 
 inputs:
-  directory:
+  dirs:
     default: "src"
-    description: "Colon-separated list of directories to look for coverage (e.g., `src:examples`)"
+    description: "List of directories to look for coverage, separated by endl or colon (e.g., `src:dir1:dir2`)"
     required: false
   file:
     default: "lcov.info"
-    description: "Path of lcov file to use. Will try to generate it if not exists."
+    description: "Path of the lcov file to use. Will generate one if missing."
     required: false
-  force:
+  keep:
+    default: "true"
+    description: "If so, use an existing lcov file (`true` or `false`)."
+    required: false
+  skip:
     default: "false"
-    description: "Force to generate a new lcov file (`true` or `false`)."
+    description: "Skip any missing directory (`true` or `false`)."
     required: false
 
 runs:
@@ -26,6 +30,7 @@ runs:
     - run: julia --color=yes "$GITHUB_ACTION_PATH"/main.jl
       shell: bash
       env:
-        INPUT_DIRECTORY: ${{ inputs.directory }}
-        INPUT_FILE_LCOV: ${{ inputs.file }}
-        INPUT_FORCE: ${{ inputs.force }}
+        INPUT_DIRECTORY: ${{ inputs.dirs }}
+        INPUT_LCOV_FILE: ${{ inputs.file }}
+        INPUT_LCOV_KEEP: ${{ inputs.keep }}
+        INPUT_SKIP_MISS: ${{ inputs.skip }}
