@@ -4,7 +4,7 @@
 
 ```yaml
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - uses: julia-actions/setup-julia@v1
@@ -22,7 +22,7 @@ OR
 
 ```yaml
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - uses: julia-actions/setup-julia@v1

@@ -31,8 +31,8 @@ dirs =
 	filter!(!isempty, split(dirs, r":|\n"))
 skip &&
 	filter!(ispath, dirs)
-filter(!isdir, dirs) .|> dir ->
-	error("`$dir` is not a directory")
+@sync filter(!isdir, dirs) .|> dir -> (
+	@error("`$dir` is not a directory"); @async error())
 isdir(file) &&
 	error("`$file` is a directory")
 
