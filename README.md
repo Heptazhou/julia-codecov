@@ -11,9 +11,11 @@
         with:
           show-versioninfo: true
       - uses: julia-actions/julia-buildpkg@v1
+        with:
+          ignore-no-cache: true
       - uses: julia-actions/julia-runtest@v1
       - uses: heptazhou/julia-codecov@v1
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v3.1.5
         with:
           file: lcov.info
 ```
@@ -29,6 +31,8 @@ OR
         with:
           show-versioninfo: true
       - uses: julia-actions/julia-buildpkg@v1
+        with:
+          ignore-no-cache: true
       - uses: julia-actions/julia-runtest@v1
       - uses: heptazhou/julia-codecov@v1
         with:
@@ -39,7 +43,7 @@ OR
             src
             dir1
             dir2
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v3.1.5
         with:
           file: lcov.info
 ```
