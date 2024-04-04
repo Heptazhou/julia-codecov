@@ -7,7 +7,7 @@
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: julia-actions/setup-julia@v1
+      - uses: julia-actions/setup-julia@v2
         with:
           show-versioninfo: true
       - uses: julia-actions/julia-buildpkg@v1
@@ -27,7 +27,7 @@ OR
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: julia-actions/setup-julia@v1
+      - uses: julia-actions/setup-julia@v2
         with:
           show-versioninfo: true
       - uses: julia-actions/julia-buildpkg@v1
