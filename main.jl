@@ -1,9 +1,8 @@
-# Copyright (C) 2022-2023 Heptazhou <zhou@0h7z.com>
+# Copyright (C) 2022-2025 Heptazhou <zhou@0h7z.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
+# published by the Free Software Foundation, version 3.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,12 +12,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const bool(s::AbstractString) = parse(Bool, s)
+const bool(s::AbstractString)::Bool = parse(Bool, s)
 
-using Pkg
+using Pkg: Pkg
 
 Pkg.activate("coverage_temp_env", shared = true)
-Pkg.add(PackageSpec(name = "CoverageTools"))
+Pkg.add(Pkg.PackageSpec(name = "CoverageTools"))
 
 using CoverageTools
 
@@ -40,6 +39,6 @@ fcs = keep && isfile(file) ? LCOV.readfile(file) : mapreduce(process_folder, vca
 LCOV.writefile(file, fcs)
 
 cvr, tot = get_summary(fcs)
-pct = round(100cvr // tot, digits = 2)
-@info "$cvr / $tot ($pct%)"
+pct = round((tot ≠ 0 ? (//) : /)(100cvr, tot), digits = 2)
+@info "$cvr / $tot ($pct %)"
 
